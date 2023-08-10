@@ -1,0 +1,79 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<style>
+    .over {
+        background-color: orange;
+    }
+    .selected {
+        background-color: green;
+    }
+</style>
+
+<body>
+    <div id="buttons"></div>
+    <table border='1' id="characterTable">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>role</th>
+                <th>house</th>
+                <th>gender</th>
+                <th>alignment</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <button id="resetButton">reset</button>
+</body>
+
+<script>
+    var characters = [
+        {name: "Albus Dumbledore", role: "staff", house: "Gryffindor", gender: "m", alignment: "good"},
+        //(other character data)
+    ];
+
+    $(document).ready(function() {
+        var $characterTable = $('#characterTable tbody');
+        var $buttonsContainer = $('#buttons');
+
+        // Function to generate the 'house' buttons
+        function generateHouseButtons() {
+            var uniqueHouses = [...new Set(characters.map(character => character.house))];
+            
+            uniqueHouses.forEach(function(house) {
+                var $button = $('<button>').text(house).addClass('houseButton');
+                $button.click(function() {
+                    $characterTable.find('tr').hide();
+                    $characterTable.find('tr[data-house="' + house + '"]').show();
+                });
+                $buttonsContainer.append($button);
+            });
+        }
+
+        // Function to generate the character table rows
+        function generateCharacterRows() {
+            characters.forEach(function(character) {
+                var $row = $('<tr>').attr('data-house', character.house);
+                $row.append($('<td>').text(character.name));
+                $row.append($('<td>').text(character.role));
+                $row.append($('<td>').text(character.house));
+                $row.append($('<td>').text(character.gender));
+                $row.append($('<td>').text(character.alignment));
+                $characterTable.append($row);
+            });
+        }
+
+        // Reset button handler
+        $('#resetButton').click(function() {
+            $characterTable.find('tr').show();
+        });
+
+        // Generate 'house' buttons and character rows
+        generateHouseButtons();
+        generateCharacterRows();
+    });
+</script>
+</html>
